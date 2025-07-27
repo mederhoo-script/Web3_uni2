@@ -39,19 +39,19 @@ const highlights = [
 
 const testimonials = [
   {
-    name: 'Sarah Chen',
+    name: 'Dozie Blockteller',
     role: 'Blockchain Developer at ConsenSys',
     content: 'Web3 University completely transformed my career. The hands-on approach and expert mentorship helped me land my dream job in just 6 months.',
     location: 'San Francisco, CA',
   },
   {
-    name: 'Marcus Johnson',
+    name: 'Annie White',
     role: 'Smart Contract Engineer',
     content: 'The DeFi course was incredible. I went from zero knowledge to building my own protocol. The community support was amazing throughout the journey.',
     location: 'London, UK',
   },
   {
-    name: 'Priya Patel',
+    name: 'life of micheal',
     role: 'Web3 Frontend Developer',
     content: 'Amazing curriculum and teaching quality. The projects we built are now part of my professional portfolio. Highly recommend to anyone serious about Web3.',
     location: 'Mumbai, India',
