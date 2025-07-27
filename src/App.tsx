@@ -115,9 +115,9 @@ function App() {
             <Route
               path="/dashboard"
               element={
-                <ProtectedRoute>
+                <PublicRoute>
                   <DashboardLayout />
-                </ProtectedRoute>
+                </PublicRoute>
               }
             >
               <Route index element={<DashboardPage />} />
