@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { User, UserRole, AuthState } from '../types/index';
+import type { User, UserRole, AuthState } from '../types/index';
 import { authService } from '../services/auth';
 import { setAuthToken } from '../services/api';
 import { socketService } from '../services/socket';
@@ -102,7 +102,7 @@ export const useAuthStore = create<AuthStore>()(
       updateProfile: async (data) => {
         try {
           const updatedUser = await authService.updateProfile(data);
-          set((state) => ({
+          set(() => ({
             user: updatedUser,
           }));
         } catch (error) {

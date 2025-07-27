@@ -1,9 +1,11 @@
 // User types
-export enum UserRole {
-  STUDENT = 'student',
-  MENTOR = 'mentor',
-  ADMIN = 'admin',
-}
+export const UserRole = {
+  STUDENT: 'student',
+  MENTOR: 'mentor',
+  ADMIN: 'admin',
+} as const;
+
+export type UserRole = typeof UserRole[keyof typeof UserRole];
 
 export interface User {
   id: string;
@@ -28,12 +30,14 @@ export interface AuthState {
 }
 
 // Cohort types
-export enum CohortStatus {
-  UPCOMING = 'upcoming',
-  ACTIVE = 'active',
-  COMPLETED = 'completed',
-  CANCELLED = 'cancelled',
-}
+export const CohortStatus = {
+  UPCOMING: 'upcoming',
+  ACTIVE: 'active',
+  COMPLETED: 'completed',
+  CANCELLED: 'cancelled',
+} as const;
+
+export type CohortStatus = typeof CohortStatus[keyof typeof CohortStatus];
 
 export interface Cohort {
   id: string;
@@ -57,19 +61,23 @@ export interface Cohort {
 }
 
 // Course types
-export enum CourseStatus {
-  DRAFT = 'draft',
-  PUBLISHED = 'published',
-  ARCHIVED = 'archived',
-}
+export const CourseStatus = {
+  DRAFT: 'draft',
+  PUBLISHED: 'published',
+  ARCHIVED: 'archived',
+} as const;
 
-export enum LessonType {
-  VIDEO = 'video',
-  TEXT = 'text',
-  INTERACTIVE = 'interactive',
-  ASSIGNMENT = 'assignment',
-  QUIZ = 'quiz',
-}
+export type CourseStatus = typeof CourseStatus[keyof typeof CourseStatus];
+
+export const LessonType = {
+  VIDEO: 'video',
+  TEXT: 'text',
+  INTERACTIVE: 'interactive',
+  ASSIGNMENT: 'assignment',
+  QUIZ: 'quiz',
+} as const;
+
+export type LessonType = typeof LessonType[keyof typeof LessonType];
 
 export interface Course {
   id: string;
@@ -114,12 +122,14 @@ export interface UserProgress {
 }
 
 // Chat types
-export enum ChatMessageType {
-  TEXT = 'text',
-  FILE = 'file',
-  IMAGE = 'image',
-  SYSTEM = 'system',
-}
+export const ChatMessageType = {
+  TEXT: 'text',
+  FILE: 'file',
+  IMAGE: 'image',
+  SYSTEM: 'system',
+} as const;
+
+export type ChatMessageType = typeof ChatMessageType[keyof typeof ChatMessageType];
 
 export interface ChatMessage {
   id: string;

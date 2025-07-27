@@ -1,5 +1,5 @@
 import { apiRequest } from './api';
-import { LoginForm, RegisterForm, User, ApiResponse } from '../types/index';
+import type { LoginForm, RegisterForm, User } from '../types/index';
 
 export const authService = {
   // Register new user

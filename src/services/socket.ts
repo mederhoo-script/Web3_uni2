@@ -1,13 +1,10 @@
 import { io, Socket } from 'socket.io-client';
-import { SocketEvents, ChatMessage, Notification } from '../types/index';
+import type { ChatMessage, Notification } from '../types/index';
 
 class SocketService {
   private socket: Socket | null = null;
-  private token: string | null = null;
 
   connect(token: string): void {
-    this.token = token;
-    
     const serverUrl = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000';
     
     this.socket = io(serverUrl, {

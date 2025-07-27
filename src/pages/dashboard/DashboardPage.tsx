@@ -1,6 +1,5 @@
 import React from 'react';
 import { useAuthStore } from '../../contexts/AuthContext';
-import { UserRole } from '../../types/index';
 
 export const DashboardPage: React.FC = () => {
   const { user } = useAuthStore();

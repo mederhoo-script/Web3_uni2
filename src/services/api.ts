@@ -1,5 +1,6 @@
-import axios, { AxiosResponse } from 'axios';
-import { ApiResponse } from '../types/index';
+import axios from 'axios';
+import type { AxiosResponse } from 'axios';
+import type { ApiResponse } from '../types/index';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
@@ -13,10 +14,7 @@ export const api = axios.create({
 });
 
 // Token management
-let authToken: string | null = null;
-
 export const setAuthToken = (token: string | null) => {
-  authToken = token;
   if (token) {
     api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     localStorage.setItem('auth_token', token);
