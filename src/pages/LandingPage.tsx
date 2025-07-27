@@ -30,9 +30,9 @@ export const LandingPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
+    <div className="min-h-screen bg-yellow-50 dark:bg-purple-950 transition-colors">
       {/* Navigation */}
-      <nav className="relative bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-700">
+      <nav className="relative bg-yellow-100/90 dark:bg-purple-900/90 backdrop-blur-md border-b border-yellow-200 dark:border-purple-700">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             {/* Logo */}
@@ -40,19 +40,19 @@ export const LandingPage: React.FC = () => {
               <img 
                 src={Web3UniLogo} 
                 alt="Web3 University" 
-                className="h-8 w-auto text-web3-600 dark:text-web3-400"
+                className="h-8 w-auto"
               />
             </div>
 
             {/* Navigation Links */}
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#courses" className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors">
+              <a href="#courses" className="text-purple-700 hover:text-yellow-600 dark:text-yellow-300 dark:hover:text-purple-200 transition-colors">
                 Courses
               </a>
-              <a href="#community" className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors">
+              <a href="#community" className="text-purple-700 hover:text-yellow-600 dark:text-yellow-300 dark:hover:text-purple-200 transition-colors">
                 Community
               </a>
-              <a href="#about" className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors">
+              <a href="#about" className="text-purple-700 hover:text-yellow-600 dark:text-yellow-300 dark:hover:text-purple-200 transition-colors">
                 About
               </a>
             </div>
@@ -63,14 +63,14 @@ export const LandingPage: React.FC = () => {
               
               <button
                 onClick={handleSignIn}
-                className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors"
+                className="text-purple-700 hover:text-yellow-600 dark:text-yellow-300 dark:hover:text-purple-200 transition-colors"
               >
                 Sign In
               </button>
               
               <button
                 onClick={handleGetStarted}
-                className="rounded-lg bg-web3-600 px-4 py-2 text-sm font-medium text-white shadow-lg transition-all hover:bg-web3-700 hover:shadow-xl dark:bg-web3-500 dark:hover:bg-web3-600"
+                className="rounded-lg bg-purple-700 px-4 py-2 text-sm font-medium text-yellow-300 shadow-lg transition-all hover:bg-yellow-400 hover:text-purple-900 hover:shadow-xl dark:bg-yellow-400 dark:text-purple-900 dark:hover:bg-purple-700 dark:hover:text-yellow-300"
               >
                 Get Started
               </button>
