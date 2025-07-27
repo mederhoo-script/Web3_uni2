@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowRightIcon, PlayIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
-import Web3UniLogo from '../../assets/web3uni-logo.svg';
 
 interface Slide {
   id: number;
@@ -17,7 +16,15 @@ interface Slide {
     action: 'register' | 'login' | 'demo';
   };
   highlight: string;
+  image: string; // Add image field to Slide interface
 }
+
+// Import images at the top of the file
+import slide1Img from '../../assets/slide1.png';
+import slide2Img from '../../assets/slide2.png';
+import slide3Img from '../../assets/slide3.png';
+import slide4Img from '../../assets/slide4.png';
+import slide5Img from '../../assets/slide5.png';
 
 const slides: Slide[] = [
   {
@@ -27,7 +34,8 @@ const slides: Slide[] = [
     description: "Learn, Apply and Earn in the world of Web3, blockchain, and decentralized technologies. Join our expert-led cohorts and build real-world projects that matter.",
     primaryCTA: { text: "Start Learning", action: "register" },
     secondaryCTA: { text: "Watch Demo", action: "demo" },
-    highlight: "Free to start • No credit card required • Join 1000+ learners"
+    highlight: "Free to start • No credit card required • Join 1000+ learners",
+    image: slide1Img, // Use imported image
   },
   {
     id: 2,
@@ -36,7 +44,8 @@ const slides: Slide[] = [
     description: "Get hands-on experience building DeFi protocols, NFT marketplaces, and decentralized applications. Learn from industry experts with proven track records.",
     primaryCTA: { text: "View Projects", action: "register" },
     secondaryCTA: { text: "Sign In", action: "login" },
-    highlight: "100+ real projects • Expert mentorship • Portfolio ready"
+    highlight: "100+ real projects • Expert mentorship • Portfolio ready",
+    image: slide2Img,
   },
   {
     id: 3,
@@ -45,7 +54,8 @@ const slides: Slide[] = [
     description: "Connect with like-minded developers in small, focused cohorts. Collaborate on cutting-edge projects and build your professional network in Web3.",
     primaryCTA: { text: "Join Cohort", action: "register" },
     secondaryCTA: { text: "Learn More", action: "login" },
-    highlight: "Small cohorts • Peer learning • Lifetime network"
+    highlight: "Small cohorts • Peer learning • Lifetime network",
+    image: slide3Img,
   },
   {
     id: 4,
@@ -54,7 +64,8 @@ const slides: Slide[] = [
     description: "Get paid for completing projects and contributing to the Web3 ecosystem. Our unique learn-and-earn model helps you transition to Web3 careers.",
     primaryCTA: { text: "Start Earning", action: "register" },
     secondaryCTA: { text: "View Opportunities", action: "login" },
-    highlight: "Paid projects • Career placement • Industry connections"
+    highlight: "Paid projects • Career placement • Industry connections",
+    image: slide4Img,
   },
   {
     id: 5,
@@ -63,7 +74,8 @@ const slides: Slide[] = [
     description: "Master blockchain fundamentals, smart contract development, and DeFi protocols. Transform your career with the most in-demand skills in tech.",
     primaryCTA: { text: "Get Started", action: "register" },
     secondaryCTA: { text: "Browse Courses", action: "login" },
-    highlight: "Expert instructors • Industry certifications • Job guarantee"
+    highlight: "Expert instructors • Industry certifications • Job guarantee",
+    image: slide5Img,
   }
 ];
 
@@ -78,7 +90,7 @@ export const HeroSlideshow: React.FC = () => {
 
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 5000); // Change slide every 5 seconds
+    }, 10000); // Change slide every 10 seconds
 
     return () => clearInterval(timer);
   }, [isAutoPlaying]);
@@ -164,20 +176,16 @@ export const HeroSlideshow: React.FC = () => {
           
           <div className="mt-12 relative sm:mx-auto sm:max-w-lg lg:col-span-6 lg:mx-0 lg:mt-0 lg:max-w-none lg:flex lg:items-center">
             <div className="relative mx-auto w-full rounded-lg lg:max-w-md">
-              {/* Hero logo/branding */}
-              <div className="relative aspect-square w-full rounded-lg bg-gradient-to-br from-web3-100 to-blue-100 p-8 dark:from-web3-900/20 dark:to-blue-900/20">
-                <div className="flex h-full items-center justify-center">
-                  <div className="text-center">
-                    <div className="mx-auto mb-6 flex items-center justify-center">
-                      <img 
-                        src={Web3UniLogo} 
-                        alt="Web3 University" 
-                        className="h-20 w-auto text-web3-600 dark:text-web3-400"
-                      />
-                    </div>
-                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Slide {currentSlide + 1} of {slides.length}</h3>
-                    <p className="mt-2 text-gray-600 dark:text-gray-400">Swipe or click to navigate</p>
-                  </div>
+              {/* Hero slide image */}
+              <div className="relative aspect-square w-full rounded-lg overflow-hidden bg-gradient-to-br from-yellow-100 to-purple-100 p-0 dark:from-purple-900/20 dark:to-yellow-900/20">
+                <img 
+                  src={currentSlideData.image} 
+                  alt={currentSlideData.title}
+                  className="h-64 w-64 mx-auto object-contain" // Increased size
+                />
+                <div className="text-center mt-6">
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Slide {currentSlide + 1} of {slides.length}</h3>
+                  <p className="mt-2 text-gray-600 dark:text-gray-400">Swipe or click to navigate</p>
                 </div>
               </div>
             </div>

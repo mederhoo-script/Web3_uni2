@@ -13,13 +13,18 @@ export const LandingPage: React.FC = () => {
   const { setTheme } = useThemeStore();
 
   useEffect(() => {
-    // Initialize theme on component mount
     const savedTheme = localStorage.getItem('web3uni-theme');
     if (savedTheme) {
       const themeData = JSON.parse(savedTheme);
       setTheme(themeData.state?.isDark || false);
+      if (themeData.state?.isDark) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
     } else {
       setTheme(true); // Default to dark mode
+      document.documentElement.classList.add('dark');
     }
   }, [setTheme]);
 
