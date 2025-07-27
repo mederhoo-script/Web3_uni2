@@ -56,6 +56,30 @@ const testimonials = [
     content: 'Amazing curriculum and teaching quality. The projects we built are now part of my professional portfolio. Highly recommend to anyone serious about Web3.',
     location: 'Mumbai, India',
   },
+  {
+    name: 'Toblin',
+    role: 'NFT Marketplace Founder',
+    content: 'The NFT bootcamp was a game changer. I launched my own marketplace with confidence thanks to the practical lessons and supportive mentors.',
+    location: 'Berlin, Germany',
+  },
+  {
+    name: 'Mederhoo',
+    role: 'Web3 Community Manager',
+    content: 'I loved the global community vibe. The networking opportunities and real-world projects helped me grow my career in ways I never imagined.',
+    location: 'Nairobi, Kenya',
+  },
+  {
+    name: "Korede It's Time",
+    role: 'Solidity Developer',
+    content: 'The Solidity deep dive was exactly what I needed. The hands-on labs and expert feedback made learning advanced smart contracts easy.',
+    location: 'Lagos, Nigeria',
+  },
+  {
+    name: 'DeFi Kuzi',
+    role: 'DeFi Protocol Architect',
+    content: 'Web3 University’s DeFi track gave me the skills to design and deploy my own protocol. The support and resources are unmatched.',
+    location: 'Cape Town, South Africa',
+  },
 ];
 
 export const CommunityHighlights: React.FC = () => {

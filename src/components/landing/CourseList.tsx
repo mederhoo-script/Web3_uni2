@@ -7,6 +7,7 @@ import {
   GlobeAltIcon,
   AcademicCapIcon
 } from '@heroicons/react/24/outline';
+import { useNavigate } from 'react-router-dom';
 
 const courses = [
   {
@@ -87,6 +88,8 @@ const getLevelColor = (level: string) => {
 };
 
 export const CourseList: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="bg-white dark:bg-gray-900 py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -106,7 +109,8 @@ export const CourseList: React.FC = () => {
             return (
               <div
                 key={course.id}
-                className="group relative overflow-hidden rounded-2xl bg-white p-6 shadow-lg transition-all hover:shadow-2xl dark:bg-gray-800 dark:shadow-gray-900/20"
+                className="group relative overflow-hidden rounded-2xl bg-white p-6 shadow-lg transition-all hover:shadow-2xl dark:bg-gray-800 dark:shadow-gray-900/20 cursor-pointer"
+                onClick={() => navigate(`/course`)}
               >
                 {/* Gradient background on hover */}
                 <div className={`absolute inset-0 bg-gradient-to-br ${course.color} opacity-0 transition-opacity group-hover:opacity-5`}></div>
@@ -140,7 +144,13 @@ export const CourseList: React.FC = () => {
                     <span className="text-sm text-gray-500 dark:text-gray-400">
                       {course.students.toLocaleString()} students
                     </span>
-                    <button className="text-sm font-medium text-web3-600 hover:text-web3-700 dark:text-web3-400 dark:hover:text-web3-300">
+                    <button
+                      className="text-sm font-medium text-web3-600 hover:text-web3-700 dark:text-web3-400 dark:hover:text-web3-300"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/course`);
+                      }}
+                    >
                       Learn more →
                     </button>
                   </div>
