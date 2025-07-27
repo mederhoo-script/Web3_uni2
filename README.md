@@ -42,9 +42,10 @@ A comprehensive Web3 education platform built with modern technologies, featurin
 - **File Upload**: Multer
 
 ### Database
-- **Primary**: PostgreSQL 14+
-- **Features**: UUID primary keys, JSONB for metadata, triggers for auto-updates
+- **Primary**: Supabase (PostgreSQL-based) for modern, scalable database with real-time features
+- **Features**: UUID primary keys, JSONB for metadata, triggers for auto-updates, Row Level Security (RLS)
 - **Indexing**: Optimized indexes for performance
+- **Real-time**: Built-in real-time subscriptions for live data updates
 
 ## 📁 Project Structure
 
@@ -98,7 +99,7 @@ Web3_uni2/
 
 ### Prerequisites
 - Node.js 18+ 
-- PostgreSQL 14+
+- Supabase account (free tier available)
 - npm or yarn
 
 ### 1. Clone the Repository
@@ -107,19 +108,62 @@ git clone https://github.com/mederhoo-script/Web3_uni2.git
 cd Web3_uni2
 ```
 
-### 2. Database Setup
+### 2. Supabase Setup
+
+#### Create a Supabase Project
+1. Visit [Supabase](https://supabase.com) and create a new account
+2. Create a new project
+3. Wait for the project to be ready (usually takes 1-2 minutes)
+
+#### Get Your Supabase Credentials
+1. Go to your project dashboard
+2. Navigate to **Settings** → **API**
+3. Copy the following values:
+   - **Project URL** (looks like `https://yourprojectid.supabase.co`)
+   - **Anon public key** (starts with `eyJ...`)
+
+#### Set Up the Database Schema
+1. In your Supabase dashboard, go to **SQL Editor**
+2. Copy the contents of `database/supabase_schema.sql`
+3. Paste and run the SQL to create all tables and relationships
+4. Optionally, run `database/supabase_seed.sql` to add sample data
+
+### 3. Frontend Setup
+
+#### Environment Configuration
 ```bash
-# Create PostgreSQL database
-createdb web3_uni_db
+# Copy the example environment file
+cp .env.example .env.local
 
-# Run schema migration
-psql -d web3_uni_db -f database/schema.sql
-
-# (Optional) Load sample data
-psql -d web3_uni_db -f database/seed.sql
+# Edit the environment file with your Supabase credentials
+nano .env.local
 ```
 
-### 3. Backend Setup
+Update `.env.local` with your actual Supabase credentials:
+```bash
+# Supabase Configuration
+VITE_SUPABASE_URL=https://yourprojectid.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key-here
+
+# Legacy API Configuration (optional, for backend integration)
+VITE_API_URL=http://localhost:5000/api
+VITE_SOCKET_URL=http://localhost:5000
+```
+
+#### Install Dependencies and Run
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+The application will be available at `http://localhost:5173`
+
+### 4. Backend Setup (Optional)
+If you want to run the legacy backend alongside Supabase:
+
 ```bash
 cd server
 
@@ -139,23 +183,7 @@ npm run build
 npm run dev
 ```
 
-### 4. Frontend Setup
-```bash
-# Return to root directory
-cd ..
-
-# Install dependencies
-npm install
-
-# Create environment file
-echo "VITE_API_URL=http://localhost:5000/api" > .env.local
-echo "VITE_SOCKET_URL=http://localhost:5000" >> .env.local
-
-# Start development server
-npm run dev
-```
-
-### 5. Run Both Frontend and Backend
+### 5. Run Both Frontend and Backend (Optional)
 ```bash
 # Install concurrently if not already installed
 npm install -g concurrently
@@ -302,6 +330,11 @@ SOCKET_CORS_ORIGIN=http://localhost:5173
 
 #### Frontend (.env.local)
 ```bash
+# Supabase Configuration (Primary Database)
+VITE_SUPABASE_URL=https://yourprojectid.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key-here
+
+# Legacy API Configuration (Optional)
 VITE_API_URL=http://localhost:5000/api
 VITE_SOCKET_URL=http://localhost:5000
 ```
@@ -328,6 +361,132 @@ Key mobile features:
 - Input validation and sanitization
 - SQL injection prevention
 - XSS protection via Helmet.js
+
+## 🚀 Deployment
+
+### Vercel Deployment (Recommended)
+
+The frontend can be easily deployed to Vercel with the following steps:
+
+#### 1. Prepare for Deployment
+```bash
+# Ensure your project builds successfully
+npm run build
+
+# Verify all dependencies are in package.json
+npm install
+```
+
+#### 2. Deploy to Vercel
+
+**Option A: Vercel CLI (Recommended)**
+```bash
+# Install Vercel CLI globally
+npm install -g vercel
+
+# Login to Vercel
+vercel login
+
+# Deploy from project root
+vercel
+
+# Follow the prompts:
+# - Set up and deploy? Yes
+# - Which scope? Select your account
+# - Link to existing project? No (for first deployment)
+# - Project name: web3-uni-frontend (or your preferred name)
+# - Directory: ./ (current directory)
+# - Override settings? No
+```
+
+**Option B: GitHub Integration**
+1. Push your code to GitHub
+2. Visit [Vercel](https://vercel.com)
+3. Click "Import Project"
+4. Import your GitHub repository
+5. Configure the following settings:
+   - **Framework Preset**: Vite
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+   - **Install Command**: `npm install`
+
+#### 3. Configure Environment Variables
+In the Vercel dashboard:
+
+1. Go to your project settings
+2. Navigate to **Environment Variables**
+3. Add the following variables:
+   ```
+   VITE_SUPABASE_URL=https://yourprojectid.supabase.co
+   VITE_SUPABASE_ANON_KEY=your-anon-key-here
+   ```
+4. Deploy again to apply the environment variables
+
+#### 4. Custom Domain (Optional)
+1. In Vercel dashboard, go to **Domains**
+2. Add your custom domain
+3. Follow DNS configuration instructions
+4. Enable HTTPS (automatic with Vercel)
+
+#### 5. Automatic Deployments
+- **Production**: Deploys automatically from `main` branch
+- **Preview**: Deploys automatically from pull requests
+- **Development**: Push to any branch for preview deployments
+
+### Supabase Configuration for Production
+
+#### Row Level Security (RLS)
+Ensure your Supabase RLS policies are properly configured:
+
+1. Go to **Authentication** → **Policies** in Supabase dashboard
+2. Review and test your RLS policies
+3. Enable RLS on all tables that contain sensitive data
+
+#### Environment Variables Verification
+```bash
+# Test your Supabase connection
+curl -H "apikey: YOUR_ANON_KEY" \
+     -H "Authorization: Bearer YOUR_ANON_KEY" \
+     "YOUR_SUPABASE_URL/rest/v1/courses?select=title&limit=1"
+```
+
+### Alternative Deployment Options
+
+#### Netlify
+```bash
+# Build the project
+npm run build
+
+# Deploy to Netlify
+# 1. Drag and drop the 'dist' folder to Netlify
+# 2. Or connect your GitHub repo for automatic deployments
+```
+
+#### Traditional Web Hosting
+```bash
+# Build the project
+npm run build
+
+# Upload the contents of the 'dist' folder to your web server
+# Ensure your web server is configured to serve SPAs (Single Page Applications)
+```
+
+### Performance Optimization
+
+#### Build Optimization
+```bash
+# Analyze bundle size
+npm run build -- --analyze
+
+# Build with specific optimizations
+npm run build -- --mode production
+```
+
+#### Caching Strategy
+Configure your deployment platform for optimal caching:
+- Static assets: Cache for 1 year
+- HTML files: Cache for 1 hour or use no-cache
+- API responses: Configure based on data update frequency
 
 ## 🧪 Testing
 
