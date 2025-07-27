@@ -40,7 +40,16 @@ export const Footer: React.FC = () => {
             <h3 className="text-sm font-semibold text-white">Community</h3>
             <ul className="mt-4 space-y-2">
               <li><a href="#" className="text-sm text-gray-400 hover:text-white transition-colors">Discord</a></li>
-              <li><a href="#" className="text-sm text-gray-400 hover:text-white transition-colors">Twitter</a></li>
+              <li>
+                <a
+                  href="https://x.com/web3_uni"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-gray-400 hover:text-white transition-colors"
+                >
+                  Twitter
+                </a>
+              </li>
               <li><a href="#" className="text-sm text-gray-400 hover:text-white transition-colors">GitHub</a></li>
               <li><a href="#" className="text-sm text-gray-400 hover:text-white transition-colors">Forum</a></li>
             </ul>

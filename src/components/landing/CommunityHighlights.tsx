@@ -180,7 +180,10 @@ export const CommunityHighlights: React.FC = () => {
             <button className="inline-flex items-center rounded-lg bg-white px-6 py-3 text-base font-medium text-web3-600 shadow-lg transition-all hover:bg-gray-50 hover:shadow-xl">
               Start Free Course
             </button>
-            <button className="inline-flex items-center rounded-lg border border-white/20 bg-transparent px-6 py-3 text-base font-medium text-white transition-all hover:bg-white/10">
+            <button
+              className="inline-flex items-center rounded-lg border border-white/20 bg-transparent px-6 py-3 text-base font-medium text-white transition-all hover:bg-white/10"
+              onClick={() => window.open('https://wa.me/2349014192395', '_blank')}
+            >
               Talk to Advisor
             </button>
           </div>
