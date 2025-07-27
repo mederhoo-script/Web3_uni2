@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ThemeToggle } from '../components/ThemeToggle';
-import { Hero } from '../components/landing/Hero';
+import { HeroSlideshow } from '../components/landing/HeroSlideshow';
 import { CourseList } from '../components/landing/CourseList';
 import { CommunityHighlights } from '../components/landing/CommunityHighlights';
 import { Footer } from '../components/landing/Footer';
@@ -81,7 +81,7 @@ export const LandingPage: React.FC = () => {
 
       {/* Main Content */}
       <main>
-        <Hero />
+        <HeroSlideshow />
         <div id="courses">
           <CourseList />
         </div>

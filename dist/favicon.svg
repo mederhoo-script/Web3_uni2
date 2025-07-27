@@ -1,0 +1,20 @@
+<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="30" cy="30" r="25" fill="#4f46e5" opacity="0.1"/>
+  
+  <!-- Web3 symbol -->
+  <g fill="#4f46e5">
+    <!-- Hexagon representing blockchain -->
+    <polygon points="30,10 42,17 42,32 30,39 18,32 18,17" fill="none" stroke="#4f46e5" stroke-width="2"/>
+    
+    <!-- Inner nodes -->
+    <circle cx="30" cy="20" r="2"/>
+    <circle cx="25" cy="27" r="2"/>
+    <circle cx="35" cy="27" r="2"/>
+    
+    <!-- Connection lines -->
+    <line x1="30" y1="20" x2="25" y2="27" stroke="#4f46e5" stroke-width="1"/>
+    <line x1="30" y1="20" x2="35" y2="27" stroke="#4f46e5" stroke-width="1"/>
+    <line x1="25" y1="27" x2="35" y2="27" stroke="#4f46e5" stroke-width="1"/>
+  </g>
+</svg>
