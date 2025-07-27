@@ -8,6 +8,7 @@ import { AuthLayout } from './layouts/AuthLayout';
 import { DashboardLayout } from './layouts/DashboardLayout';
 
 // Pages
+import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/auth/LoginPage';
 import { RegisterPage } from './pages/auth/RegisterPage';
 import { DashboardPage } from './pages/dashboard/DashboardPage';
@@ -75,6 +76,25 @@ const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return <>{children}</>;
 };
 
+// Landing Route Component (show landing page for unauthorized, redirect authenticated users)
+const LandingRoute: React.FC = () => {
+  const { isAuthenticated, isLoading } = useAuthStore();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+      </div>
+    );
+  }
+
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return <LandingPage />;
+};
+
 function App() {
   const { initialize } = useAuthStore();
 
@@ -88,8 +108,10 @@ function App() {
       <Router>
         <div className="App">
           <Routes>
+            {/* Landing Page Route */}
+            <Route path="/" element={<LandingRoute />} />
+            
             {/* Public Routes */}
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route
               path="/login"
               element={
