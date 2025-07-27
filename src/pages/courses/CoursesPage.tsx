@@ -21,6 +21,11 @@ export const CoursesPage: React.FC = () => {
         setLoading(true);
         setError(null);
         
+        // Check if Supabase is configured
+        if (!courseService.isConfigured()) {
+          throw new Error('Supabase not configured - using mock data');
+        }
+        
         const supabaseCourses = await courseService.getCourses();
         
         // Transform Supabase courses to include additional UI data
@@ -36,7 +41,7 @@ export const CoursesPage: React.FC = () => {
         setCourses(coursesWithProgress);
       } catch (err) {
         console.error('Error loading courses:', err);
-        setError('Failed to load courses. Please check your Supabase configuration.');
+        setError('Failed to load courses from Supabase. Showing sample data instead.');
         
         // Fallback to mock data if Supabase fails
         const mockCourses: CourseWithProgress[] = [
@@ -75,6 +80,24 @@ export const CoursesPage: React.FC = () => {
             enrolledStudents: 32,
             rating: 4.9,
             progress: 60,
+          },
+          {
+            id: '3',
+            title: 'DeFi Protocols Deep Dive',
+            description: 'Understand decentralized finance protocols and their mechanisms.',
+            thumbnail: 'https://images.unsplash.com/photo-1559526324-593bc073d938?w=400&h=300&fit=crop',
+            status: 'published' as const,
+            difficulty: 4,
+            estimated_hours: 12,
+            prerequisites: null,
+            tags: ['defi', 'protocols', 'advanced'],
+            created_by: 'mock',
+            is_active: true,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            enrolledStudents: 18,
+            rating: 4.7,
+            progress: 0,
           },
         ];
         setCourses(mockCourses);

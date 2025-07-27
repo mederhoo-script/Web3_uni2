@@ -4,12 +4,26 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn('Supabase URL and Anon Key are required. Please check your environment variables.');
+// Check if Supabase is configured with valid URL
+const isValidUrl = (string: string) => {
+  try {
+    new URL(string);
+    return true;
+  } catch (_) {
+    return false;
+  }
+};
+
+const isSupabaseConfigured = !!(supabaseUrl && supabaseAnonKey && isValidUrl(supabaseUrl));
+
+if (!isSupabaseConfigured) {
+  console.warn('Supabase URL and Anon Key are required and URL must be valid. Please check your environment variables. The app will use mock data instead.');
 }
 
-// Create Supabase client
-export const supabase = createClient(supabaseUrl || '', supabaseAnonKey || '');
+// Create Supabase client only if properly configured
+export const supabase = isSupabaseConfigured 
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : null;
 
 // Database types based on our schema
 export interface Course {
@@ -76,6 +90,10 @@ export interface UserProgress {
 export const courseService = {
   // Get all published courses
   async getCourses(): Promise<Course[]> {
+    if (!supabase) {
+      throw new Error('Supabase not configured');
+    }
+
     const { data, error } = await supabase
       .from('courses')
       .select('*')
@@ -93,6 +111,10 @@ export const courseService = {
 
   // Get course by ID with lessons
   async getCourseById(courseId: string): Promise<Course & { lessons?: Lesson[] }> {
+    if (!supabase) {
+      throw new Error('Supabase not configured');
+    }
+
     const { data: course, error: courseError } = await supabase
       .from('courses')
       .select('*')
@@ -126,6 +148,10 @@ export const courseService = {
 
   // Get user's progress for a course
   async getUserProgress(userId: string, courseId: string): Promise<UserProgress[]> {
+    if (!supabase) {
+      throw new Error('Supabase not configured');
+    }
+
     const { data, error } = await supabase
       .from('user_progress')
       .select('*')
@@ -142,6 +168,10 @@ export const courseService = {
 
   // Calculate course progress percentage
   async getCourseProgress(userId: string, courseId: string): Promise<number> {
+    if (!supabase) {
+      throw new Error('Supabase not configured');
+    }
+
     try {
       // Get total lessons for the course
       const { data: lessons, error: lessonsError } = await supabase
@@ -171,6 +201,11 @@ export const courseService = {
       console.error('Error calculating course progress:', error);
       return 0;
     }
+  },
+
+  // Check if Supabase is configured
+  isConfigured(): boolean {
+    return isSupabaseConfigured;
   }
 };
 
