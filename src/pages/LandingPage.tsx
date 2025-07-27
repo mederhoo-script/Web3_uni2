@@ -18,6 +18,8 @@ export const LandingPage: React.FC = () => {
     if (savedTheme) {
       const themeData = JSON.parse(savedTheme);
       setTheme(themeData.state?.isDark || false);
+    } else {
+      setTheme(true); // Default to dark mode
     }
   }, [setTheme]);
 
