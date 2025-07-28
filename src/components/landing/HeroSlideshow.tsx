@@ -181,7 +181,7 @@ export const HeroSlideshow: React.FC = () => {
                 <img 
                   src={currentSlideData.image} 
                   alt={currentSlideData.title}
-                  className="h-64 w-64 mx-auto object-contain" // Increased size
+                  className="w-full h-full object-cover" // Fill the div completely
                 />
                 <div className="text-center mt-6">
                   <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Slide {currentSlide + 1} of {slides.length}</h3>
