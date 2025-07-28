@@ -14,9 +14,7 @@ interface AuthStore extends AuthState {
 }
 
 // Create user from wallet address
-const createUserFromAddress = (address: string): User => {
-  return authService.createUserFromAddress(address);
-};
+// Removed unused createUserFromAddress function
 
 export const useAuthStore = create<AuthStore>()(
   persist(
