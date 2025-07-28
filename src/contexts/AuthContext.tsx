@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { useAddress, useConnectionStatus } from '@thirdweb-dev/react';
 import type { User, AuthState } from '../types/index';
 import { authService } from '../services/auth';
 
@@ -77,37 +76,3 @@ export const useAuthStore = create<AuthStore>()(
     }
   )
 );
-
-// Custom hook to handle Thirdweb authentication
-export const useThirdwebAuth = () => {
-  const address = useAddress();
-  const connectionStatus = useConnectionStatus();
-  const { setLoading, disconnectWallet } = useAuthStore();
-
-  const initialize = () => {
-    if (connectionStatus === 'connecting') {
-      setLoading(true);
-      return;
-    }
-
-    if (address && connectionStatus === 'connected') {
-      const user = createUserFromAddress(address);
-      useAuthStore.setState({
-        user,
-        token: address, // Use address as token
-        isAuthenticated: true,
-        isLoading: false,
-      });
-    } else if (connectionStatus === 'disconnected') {
-      disconnectWallet();
-    } else {
-      setLoading(false);
-    }
-  };
-
-  return {
-    address,
-    connectionStatus,
-    initialize,
-  };
-};

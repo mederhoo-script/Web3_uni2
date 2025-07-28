@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'react-hot-toast';
+import { useAddress, useConnectionStatus } from '@thirdweb-dev/react';
 
 // Layouts
 import { AuthLayout } from './layouts/AuthLayout';
@@ -18,7 +19,8 @@ import { ChatPage } from './pages/chat/ChatPage';
 import { AdminPage } from './pages/admin/AdminPage';
 
 // Contexts
-import { useAuthStore, useThirdwebAuth } from './contexts/AuthContext';
+import { useAuthStore } from './contexts/AuthContext';
+import { authService } from './services/auth';
 import { UserRole } from './types/index';
 
 // Create a QueryClient instance
@@ -33,11 +35,30 @@ const queryClient = new QueryClient({
 
 // Auth initialization component
 const AuthInitializer: React.FC = () => {
-  const { initialize } = useThirdwebAuth();
+  const address = useAddress();
+  const connectionStatus = useConnectionStatus();
+  const { setLoading, disconnectWallet } = useAuthStore();
 
   useEffect(() => {
-    initialize();
-  }, [initialize]);
+    if (connectionStatus === 'connecting') {
+      setLoading(true);
+      return;
+    }
+
+    if (address && connectionStatus === 'connected') {
+      const user = authService.createUserFromAddress(address);
+      useAuthStore.setState({
+        user,
+        token: address,
+        isAuthenticated: true,
+        isLoading: false,
+      });
+    } else if (connectionStatus === 'disconnected') {
+      disconnectWallet();
+    } else {
+      setLoading(false);
+    }
+  }, [address, connectionStatus, setLoading, disconnectWallet]);
 
   return null;
 };
