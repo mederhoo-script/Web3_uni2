@@ -1,49 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { dataService } from '../../services/data';
+import type { Course } from '../../types/index';
 
 export const CoursesPage: React.FC = () => {
   const [filter, setFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const mockCourses = [
-    {
-      id: '1',
-      title: 'Introduction to Blockchain',
-      description: 'Learn the fundamentals of blockchain technology and its applications.',
-      thumbnail: '/api/placeholder/300/200',
-      difficulty: 1,
-      estimatedHours: 8,
-      tags: ['blockchain', 'fundamentals', 'beginner'],
-      enrolledStudents: 45,
-      rating: 4.8,
-      progress: 25,
-    },
-    {
-      id: '2',
-      title: 'Smart Contract Development',
-      description: 'Build and deploy smart contracts using Solidity and Ethereum.',
-      thumbnail: '/api/placeholder/300/200',
-      difficulty: 3,
-      estimatedHours: 16,
-      tags: ['solidity', 'ethereum', 'smart-contracts'],
-      enrolledStudents: 32,
-      rating: 4.9,
-      progress: 60,
-    },
-    {
-      id: '3',
-      title: 'DeFi Protocols Deep Dive',
-      description: 'Understand decentralized finance protocols and their mechanisms.',
-      thumbnail: '/api/placeholder/300/200',
-      difficulty: 4,
-      estimatedHours: 12,
-      tags: ['defi', 'protocols', 'advanced'],
-      enrolledStudents: 18,
-      rating: 4.7,
-      progress: 0,
-    },
-  ];
+  useEffect(() => {
+    const loadCourses = async () => {
+      try {
+        const coursesData = await dataService.getCourses();
+        setCourses(coursesData);
+      } catch (error) {
+        console.error('Failed to load courses:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const filteredCourses = mockCourses.filter(course => {
+    loadCourses();
+  }, []);
+
+  // Extended mock data with progress tracking
+  const coursesWithProgress = courses.map(course => ({
+    ...course,
+    enrolledStudents: Math.floor(Math.random() * 50) + 10,
+    rating: 4.5 + Math.random() * 0.5,
+    progress: Math.floor(Math.random() * 100),
+  }));
+
+  const filteredCourses = coursesWithProgress.filter(course => {
     const matchesSearch = course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          course.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesFilter = filter === 'all' || 
@@ -104,84 +92,94 @@ export const CoursesPage: React.FC = () => {
         </div>
       </div>
 
+      {/* Loading State */}
+      {loading && (
+        <div className="text-center py-12">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto"></div>
+          <p className="mt-2 text-gray-600">Loading courses...</p>
+        </div>
+      )}
+
       {/* Course Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredCourses.map((course) => (
-          <div key={course.id} className="bg-white rounded-lg shadow overflow-hidden hover:shadow-lg transition-shadow">
-            <div className="aspect-video bg-gray-200 flex items-center justify-center">
-              <span className="text-gray-400">📚 Course Thumbnail</span>
-            </div>
-            
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-2">
-                <span className={`px-2 py-1 text-xs font-medium rounded-full ${getDifficultyColor(course.difficulty)}`}>
-                  {getDifficultyLabel(course.difficulty)}
-                </span>
-                <div className="flex items-center text-sm text-gray-500">
-                  <span>⭐ {course.rating}</span>
-                </div>
+      {!loading && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredCourses.map((course) => (
+            <div key={course.id} className="bg-white rounded-lg shadow overflow-hidden hover:shadow-lg transition-shadow">
+              <div className="aspect-video bg-gray-200 flex items-center justify-center">
+                <span className="text-gray-400">📚 Course Thumbnail</span>
               </div>
               
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">{course.title}</h3>
-              <p className="text-gray-600 text-sm mb-4 line-clamp-2">{course.description}</p>
-              
-              <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
-                <span>⏱️ {course.estimatedHours}h</span>
-                <span>👥 {course.enrolledStudents} students</span>
-              </div>
-
-              {course.progress > 0 && (
-                <div className="mb-4">
-                  <div className="flex justify-between items-center mb-1">
-                    <span className="text-sm font-medium text-gray-700">Progress</span>
-                    <span className="text-sm text-gray-500">{course.progress}%</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div
-                      className="bg-indigo-600 h-2 rounded-full"
-                      style={{ width: `${course.progress}%` }}
-                    ></div>
-                  </div>
-                </div>
-              )}
-
-              <div className="flex flex-wrap gap-1 mb-4">
-                {course.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded"
-                  >
-                    {tag}
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-2">
+                  <span className={`px-2 py-1 text-xs font-medium rounded-full ${getDifficultyColor(course.difficulty)}`}>
+                    {getDifficultyLabel(course.difficulty)}
                   </span>
-                ))}
-              </div>
+                  <div className="flex items-center text-sm text-gray-500">
+                    <span>⭐ {course.rating.toFixed(1)}</span>
+                  </div>
+                </div>
+                
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{course.title}</h3>
+                <p className="text-gray-600 text-sm mb-4 line-clamp-2">{course.description}</p>
+                
+                <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+                  <span>⏱️ {course.estimatedHours}h</span>
+                  <span>👥 {course.enrolledStudents} students</span>
+                </div>
 
-              <div className="flex space-x-2">
-                {course.progress > 0 ? (
-                  <a
-                    href={`/courses/${course.id}`}
-                    className="flex-1 bg-indigo-600 text-white px-4 py-2 rounded-lg text-center hover:bg-indigo-700 transition-colors"
-                  >
-                    Continue
-                  </a>
-                ) : (
-                  <a
-                    href={`/courses/${course.id}`}
-                    className="flex-1 bg-indigo-600 text-white px-4 py-2 rounded-lg text-center hover:bg-indigo-700 transition-colors"
-                  >
-                    Start Course
-                  </a>
+                {course.progress > 0 && (
+                  <div className="mb-4">
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="text-sm font-medium text-gray-700">Progress</span>
+                      <span className="text-sm text-gray-500">{course.progress}%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div
+                        className="bg-indigo-600 h-2 rounded-full"
+                        style={{ width: `${course.progress}%` }}
+                      ></div>
+                    </div>
+                  </div>
                 )}
-                <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                  ❤️
-                </button>
+
+                <div className="flex flex-wrap gap-1 mb-4">
+                  {course.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="flex space-x-2">
+                  {course.progress > 0 ? (
+                    <a
+                      href={`/courses/${course.id}`}
+                      className="flex-1 bg-indigo-600 text-white px-4 py-2 rounded-lg text-center hover:bg-indigo-700 transition-colors"
+                    >
+                      Continue
+                    </a>
+                  ) : (
+                    <a
+                      href={`/courses/${course.id}`}
+                      className="flex-1 bg-indigo-600 text-white px-4 py-2 rounded-lg text-center hover:bg-indigo-700 transition-colors"
+                    >
+                      Start Course
+                    </a>
+                  )}
+                  <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                    ❤️
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
-      {filteredCourses.length === 0 && (
+      {!loading && filteredCourses.length === 0 && (
         <div className="text-center py-12">
           <span className="text-4xl mb-4 block">📚</span>
           <h3 className="text-lg font-medium text-gray-900 mb-2">No courses found</h3>

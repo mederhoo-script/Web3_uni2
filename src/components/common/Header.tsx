@@ -1,14 +1,24 @@
 import React, { useState } from 'react';
+import { useDisconnect } from '@thirdweb-dev/react';
 import { useAuthStore } from '../../contexts/AuthContext';
 import { UserRole } from '../../types/index';
 
 export const Header: React.FC = () => {
   const { user, logout } = useAuthStore();
+  const disconnect = useDisconnect();
   const [showUserMenu, setShowUserMenu] = useState(false);
 
-  const handleLogout = () => {
-    logout();
-    setShowUserMenu(false);
+  const handleLogout = async () => {
+    try {
+      await disconnect();
+      logout();
+      setShowUserMenu(false);
+    } catch (error) {
+      console.error('Failed to disconnect:', error);
+      // Still logout locally even if disconnect fails
+      logout();
+      setShowUserMenu(false);
+    }
   };
 
   return (
@@ -68,11 +78,14 @@ export const Header: React.FC = () => {
             >
               <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center">
                 <span className="text-white text-sm font-medium">
-                  {user?.firstName?.[0]}{user?.lastName?.[0]}
+                  {user?.firstName?.[0]?.toUpperCase()}{user?.lastName?.[0]?.toUpperCase()}
                 </span>
               </div>
               <span className="hidden md:block text-sm font-medium">
                 {user?.firstName} {user?.lastName}
+              </span>
+              <span className="hidden sm:block text-xs text-gray-500">
+                {user?.id?.slice(0, 6)}...{user?.id?.slice(-4)}
               </span>
             </button>
 
@@ -97,7 +110,7 @@ export const Header: React.FC = () => {
                   onClick={handleLogout}
                   className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >
-                  Sign out
+                  Disconnect Wallet
                 </button>
               </div>
             )}

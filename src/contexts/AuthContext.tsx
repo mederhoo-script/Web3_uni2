@@ -1,26 +1,22 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { User, UserRole, AuthState } from '../types/index';
+import type { User, AuthState } from '../types/index';
 import { authService } from '../services/auth';
-import { setAuthToken } from '../services/api';
-import { socketService } from '../services/socket';
 
 interface AuthStore extends AuthState {
   // Actions
-  login: (email: string, password: string) => Promise<void>;
-  register: (data: {
-    email: string;
-    username: string;
-    firstName: string;
-    lastName: string;
-    password: string;
-    role?: UserRole;
-  }) => Promise<void>;
-  logout: () => void;
+  connectWallet: () => void;
+  disconnectWallet: () => void;
+  logout: () => void; // Add alias for disconnectWallet
   updateProfile: (data: Partial<User>) => Promise<void>;
   setLoading: (loading: boolean) => void;
-  initialize: () => Promise<void>;
+  initialize: () => void;
 }
+
+// Create user from wallet address
+const createUserFromAddress = (address: string): User => {
+  return authService.createUserFromAddress(address);
+};
 
 export const useAuthStore = create<AuthStore>()(
   persist(
@@ -30,67 +26,13 @@ export const useAuthStore = create<AuthStore>()(
       isAuthenticated: false,
       isLoading: false,
 
-      login: async (email: string, password: string) => {
-        try {
-          set({ isLoading: true });
-          
-          const { user, token } = await authService.login({ email, password });
-          
-          // Set token for API requests
-          setAuthToken(token);
-          
-          // Connect to Socket.IO
-          socketService.connect(token);
-          
-          set({
-            user,
-            token,
-            isAuthenticated: true,
-            isLoading: false,
-          });
-        } catch (error) {
-          set({ isLoading: false });
-          throw error;
-        }
+      connectWallet: () => {
+        // This will be handled by Thirdweb ConnectWallet button
+        // The actual connection logic is in the initialize function
       },
 
-      register: async (data) => {
-        try {
-          set({ isLoading: true });
-          
-          const { user, token } = await authService.register({
-            ...data,
-            confirmPassword: data.password, // For validation
-          });
-          
-          // Set token for API requests
-          setAuthToken(token);
-          
-          // Connect to Socket.IO
-          socketService.connect(token);
-          
-          set({
-            user,
-            token,
-            isAuthenticated: true,
-            isLoading: false,
-          });
-        } catch (error) {
-          set({ isLoading: false });
-          throw error;
-        }
-      },
-
-      logout: () => {
-        // Clear API token
-        setAuthToken(null);
-        
-        // Disconnect from Socket.IO
-        socketService.disconnect();
-        
-        // Clear auth service logout (optional API call)
-        authService.logout().catch(console.error);
-        
+      disconnectWallet: () => {
+        authService.logout();
         set({
           user: null,
           token: null,
@@ -99,12 +41,19 @@ export const useAuthStore = create<AuthStore>()(
         });
       },
 
-      updateProfile: async (data) => {
+      logout: () => {
+        // Alias for disconnectWallet for backwards compatibility
+        const { disconnectWallet } = get();
+        disconnectWallet();
+      },
+
+      updateProfile: async (data: Partial<User>) => {
         try {
-          const updatedUser = await authService.updateProfile(data);
-          set(() => ({
-            user: updatedUser,
-          }));
+          const { user } = get();
+          if (!user) throw new Error('No user found');
+
+          const updatedUser = await authService.updateProfile(data, user.id);
+          set({ user: updatedUser });
         } catch (error) {
           throw error;
         }
@@ -114,47 +63,14 @@ export const useAuthStore = create<AuthStore>()(
         set({ isLoading: loading });
       },
 
-      initialize: async () => {
-        const { token } = get();
-        
-        if (!token) {
-          return;
-        }
-
-        try {
-          set({ isLoading: true });
-          
-          // Set token for API requests
-          setAuthToken(token);
-          
-          // Get current user profile
-          const user = await authService.getProfile();
-          
-          // Connect to Socket.IO
-          socketService.connect(token);
-          
-          set({
-            user,
-            isAuthenticated: true,
-            isLoading: false,
-          });
-        } catch (error) {
-          console.error('Failed to initialize auth:', error);
-          // Clear invalid token
-          set({
-            user: null,
-            token: null,
-            isAuthenticated: false,
-            isLoading: false,
-          });
-          setAuthToken(null);
-        }
+      initialize: () => {
+        // This function will be called from a component that has access to Thirdweb hooks
+        // We'll create a separate hook for this
       },
     }),
     {
       name: 'auth-storage',
       partialize: (state) => ({
-        token: state.token,
         user: state.user,
       }),
     }

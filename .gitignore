@@ -12,7 +12,7 @@ node_modules
 server/node_modules
 
 # Build outputs
-#dist
+dist
 dist-ssr
 build
 server/dist
