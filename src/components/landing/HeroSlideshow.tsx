@@ -175,13 +175,14 @@ export const HeroSlideshow: React.FC = () => {
           </div>
           
           <div className="mt-12 relative sm:mx-auto sm:max-w-lg lg:col-span-6 lg:mx-0 lg:mt-0 lg:max-w-none lg:flex lg:items-center">
-            <div className="relative mx-auto w-full rounded-lg lg:max-w-md">
+            {/* Remove the inner max-w-md wrapper */}
+            <div className="relative w-full h-full rounded-lg">
               {/* Hero slide image */}
-              <div className="relative aspect-square w-full rounded-lg overflow-hidden bg-gradient-to-br from-yellow-100 to-purple-100 p-0 dark:from-purple-900/20 dark:to-yellow-900/20">
+              <div className="relative aspect-square w-full h-full rounded-lg overflow-hidden bg-gradient-to-br from-yellow-100 to-purple-100 p-0 dark:from-purple-900/20 dark:to-yellow-900/20">
                 <img 
                   src={currentSlideData.image} 
                   alt={currentSlideData.title}
-                  className="absolute inset-0 w-full h-full object-cover" // Ensures image fills the div
+                  className="absolute inset-0 w-full h-full object-cover"
                   style={{ objectFit: 'cover' }}
                 />
                 <div className="text-center mt-6 relative z-10">
