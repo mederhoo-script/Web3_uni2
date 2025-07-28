@@ -18,7 +18,7 @@ import { ChatPage } from './pages/chat/ChatPage';
 import { AdminPage } from './pages/admin/AdminPage';
 
 // Contexts
-import { useAuthStore } from './contexts/AuthContext';
+import { useAuthStore, useThirdwebAuth } from './contexts/AuthContext';
 import { UserRole } from './types/index';
 
 // Create a QueryClient instance
@@ -30,6 +30,17 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+// Auth initialization component
+const AuthInitializer: React.FC = () => {
+  const { initialize } = useThirdwebAuth();
+
+  useEffect(() => {
+    initialize();
+  }, [initialize]);
+
+  return null;
+};
 
 // Protected Route Component
 const ProtectedRoute: React.FC<{ children: React.ReactNode; roles?: UserRole[] }> = ({ 
@@ -96,17 +107,11 @@ const LandingRoute: React.FC = () => {
 };
 
 function App() {
-  const { initialize } = useAuthStore();
-
-  useEffect(() => {
-    // Initialize auth state from storage
-    initialize();
-  }, [initialize]);
-
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
         <div className="App">
+          <AuthInitializer />
           <Routes>
             {/* Landing Page Route */}
             <Route path="/" element={<LandingRoute />} />

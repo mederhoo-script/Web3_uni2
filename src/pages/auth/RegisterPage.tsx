@@ -1,178 +1,106 @@
-import React, { useState } from 'react';
-import { useAuthStore } from '../../contexts/AuthContext';
+import React from 'react';
+import { ConnectWallet } from '@thirdweb-dev/react';
 import { useNavigate } from 'react-router-dom';
-import { UserRole } from '../../types/index';
+import { useAuthStore } from '../../contexts/AuthContext';
 
 export const RegisterPage: React.FC = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    username: '',
-    firstName: '',
-    lastName: '',
-    password: '',
-    confirmPassword: '',
-    role: UserRole.STUDENT,
-  });
-  const [error, setError] = useState('');
-  const { register, isLoading } = useAuthStore();
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuthStore();
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-
-    if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
-      return;
-    }
-
-    try {
-      await register(formData);
+  // Redirect if already authenticated
+  React.useEffect(() => {
+    if (isAuthenticated) {
       navigate('/dashboard');
-    } catch (err: any) {
-      setError(err.response?.data?.error?.message || 'Registration failed');
     }
-  };
+  }, [isAuthenticated, navigate]);
 
   return (
     <div>
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Create your account</h2>
+        <h2 className="text-2xl font-bold text-gray-900">Join Web3 University</h2>
         <p className="mt-2 text-sm text-gray-600">
-          Already have an account?{' '}
+          Already have a wallet connected?{' '}
           <a href="/login" className="text-indigo-600 hover:text-indigo-500">
             Sign in here
           </a>
         </p>
       </div>
 
-      {error && (
-        <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-md">
-          <p className="text-sm text-red-600">{error}</p>
-        </div>
-      )}
-
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
-              First name
-            </label>
-            <input
-              id="firstName"
-              name="firstName"
-              type="text"
-              required
-              value={formData.firstName}
-              onChange={handleInputChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-            />
+      <div className="space-y-6">
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-md p-6">
+          <h3 className="text-lg font-medium text-gray-900 mb-4">Welcome to the Future of Education</h3>
+          <div className="space-y-3 text-sm text-gray-700">
+            <div className="flex items-start">
+              <div className="flex-shrink-0">
+                <div className="flex items-center justify-center h-6 w-6 rounded-full bg-blue-100">
+                  <span className="text-blue-600 font-medium">1</span>
+                </div>
+              </div>
+              <div className="ml-3">
+                <p>Connect your Web3 wallet (MetaMask, WalletConnect, etc.)</p>
+              </div>
+            </div>
+            <div className="flex items-start">
+              <div className="flex-shrink-0">
+                <div className="flex items-center justify-center h-6 w-6 rounded-full bg-blue-100">
+                  <span className="text-blue-600 font-medium">2</span>
+                </div>
+              </div>
+              <div className="ml-3">
+                <p>Your wallet address becomes your unique identity</p>
+              </div>
+            </div>
+            <div className="flex items-start">
+              <div className="flex-shrink-0">
+                <div className="flex items-center justify-center h-6 w-6 rounded-full bg-blue-100">
+                  <span className="text-blue-600 font-medium">3</span>
+                </div>
+              </div>
+              <div className="ml-3">
+                <p>Start learning Web3 development immediately!</p>
+              </div>
+            </div>
           </div>
-          <div>
-            <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
-              Last name
-            </label>
-            <input
-              id="lastName"
-              name="lastName"
-              type="text"
-              required
-              value={formData.lastName}
-              onChange={handleInputChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-            />
-          </div>
         </div>
 
-        <div>
-          <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-            Username
-          </label>
-          <input
-            id="username"
-            name="username"
-            type="text"
-            required
-            value={formData.username}
-            onChange={handleInputChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+        <div className="flex justify-center">
+          <ConnectWallet 
+            theme="light"
+            btnTitle="Connect Wallet to Join"
+            modalTitle="Choose Your Wallet"
+            modalSize="wide"
+            welcomeScreen={{
+              title: "Join Web3 University",
+              subtitle: "Connect your wallet to start your Web3 journey",
+            }}
           />
         </div>
 
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-            Email address
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            required
-            value={formData.email}
-            onChange={handleInputChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-          />
+        <div className="text-center">
+          <p className="text-sm text-gray-500">
+            Don't have a wallet?{' '}
+            <a 
+              href="https://metamask.io/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-indigo-600 hover:text-indigo-500"
+            >
+              Download MetaMask
+            </a>{' '}
+            to get started with Web3.
+          </p>
         </div>
 
-        <div>
-          <label htmlFor="role" className="block text-sm font-medium text-gray-700">
-            Role
-          </label>
-          <select
-            id="role"
-            name="role"
-            value={formData.role}
-            onChange={handleInputChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-          >
-            <option value={UserRole.STUDENT}>Student</option>
-            <option value={UserRole.MENTOR}>Mentor</option>
-          </select>
+        <div className="bg-gray-50 rounded-md p-4">
+          <h4 className="text-sm font-medium text-gray-900 mb-2">Why Web3 Authentication?</h4>
+          <ul className="text-sm text-gray-600 space-y-1">
+            <li>• No passwords to remember or forget</li>
+            <li>• Complete control over your identity</li>
+            <li>• Secure and decentralized authentication</li>
+            <li>• Connect with the same wallet across all Web3 apps</li>
+          </ul>
         </div>
-
-        <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-            Password
-          </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            required
-            value={formData.password}
-            onChange={handleInputChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
-            Confirm password
-          </label>
-          <input
-            id="confirmPassword"
-            name="confirmPassword"
-            type="password"
-            required
-            value={formData.confirmPassword}
-            onChange={handleInputChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-          />
-        </div>
-
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
-        >
-          {isLoading ? 'Creating account...' : 'Create account'}
-        </button>
-      </form>
+      </div>
     </div>
   );
 };

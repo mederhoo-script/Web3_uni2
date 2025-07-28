@@ -1,57 +1,51 @@
-import { apiRequest } from './api';
-import type { LoginForm, RegisterForm, User } from '../types/index';
+import type { User, UserRole } from '../types/index';
+import { dataService } from './data';
+
+// Create a user profile from wallet address
+const createUserFromAddress = (address: string): User => {
+  // Check if we have existing user data
+  const existingUser = dataService.getUserData();
+  if (existingUser && existingUser.id === address) {
+    return existingUser;
+  }
+
+  // Create new user profile
+  const newUser: User = {
+    id: address,
+    email: `${address.slice(0, 8)}@web3uni.com`,
+    username: `user_${address.slice(0, 8)}`,
+    firstName: 'Web3',
+    lastName: 'User',
+    role: 'student' as UserRole,
+    avatar: '',
+    bio: 'Web3 University Student',
+    isActive: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  // Save to localStorage
+  dataService.saveUserData(newUser);
+  return newUser;
+};
 
 export const authService = {
-  // Register new user
-  register: async (data: RegisterForm): Promise<{ user: User; token: string }> => {
-    const response = await apiRequest.post<{ user: User; token: string }>('/auth/register', data);
-    return response.data.data!;
-  },
-
-  // Login user
-  login: async (data: LoginForm): Promise<{ user: User; token: string }> => {
-    const response = await apiRequest.post<{ user: User; token: string }>('/auth/login', data);
-    return response.data.data!;
-  },
-
-  // Refresh token
-  refreshToken: async (refreshToken: string): Promise<{ token: string }> => {
-    const response = await apiRequest.post<{ token: string }>('/auth/refresh', { refreshToken });
-    return response.data.data!;
-  },
-
-  // Logout user
-  logout: async (): Promise<void> => {
-    await apiRequest.post('/auth/logout');
-  },
-
-  // Request password reset
-  forgotPassword: async (email: string): Promise<void> => {
-    await apiRequest.post('/auth/forgot-password', { email });
-  },
-
-  // Reset password
-  resetPassword: async (token: string, password: string): Promise<void> => {
-    await apiRequest.post('/auth/reset-password', { token, password });
-  },
-
-  // Get current user profile
-  getProfile: async (): Promise<User> => {
-    const response = await apiRequest.get<{ user: User }>('/users/profile');
-    return response.data.data!.user;
-  },
+  // Create user from address (used by context)
+  createUserFromAddress,
 
   // Update user profile
-  updateProfile: async (data: Partial<User>): Promise<User> => {
-    const response = await apiRequest.put<{ user: User }>('/users/profile', data);
-    return response.data.data!.user;
+  updateProfile: async (data: Partial<User>, currentAddress: string): Promise<User> => {
+    if (!currentAddress) throw new Error('No wallet connected');
+
+    const currentUser = dataService.getUserData() || createUserFromAddress(currentAddress);
+    const updatedUser = { ...currentUser, ...data, updatedAt: new Date().toISOString() };
+    
+    dataService.saveUserData(updatedUser);
+    return updatedUser;
   },
 
-  // Change password
-  changePassword: async (currentPassword: string, newPassword: string): Promise<void> => {
-    await apiRequest.post('/users/change-password', {
-      currentPassword,
-      newPassword,
-    });
+  // Clear user data on logout
+  logout: () => {
+    dataService.clearUserData();
   },
 };
