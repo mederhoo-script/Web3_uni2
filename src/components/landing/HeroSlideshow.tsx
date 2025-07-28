@@ -175,9 +175,8 @@ export const HeroSlideshow: React.FC = () => {
           </div>
           
           <div className="mt-12 relative sm:mx-auto sm:max-w-lg lg:col-span-6 lg:mx-0 lg:mt-0 lg:max-w-none lg:flex lg:items-center">
-            {/* Remove the inner max-w-md wrapper */}
             <div className="relative w-full h-full rounded-lg">
-              {/* Hero slide image */}
+              {/* Hero slide image - covers all available space, no overlay text */}
               <div className="relative aspect-square w-full h-full rounded-lg overflow-hidden bg-gradient-to-br from-yellow-100 to-purple-100 p-0 dark:from-purple-900/20 dark:to-yellow-900/20">
                 <img 
                   src={currentSlideData.image} 
@@ -185,10 +184,7 @@ export const HeroSlideshow: React.FC = () => {
                   className="absolute inset-0 w-full h-full object-cover"
                   style={{ objectFit: 'cover' }}
                 />
-                <div className="text-center mt-6 relative z-10">
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Slide {currentSlide + 1} of {slides.length}</h3>
-                  <p className="mt-2 text-gray-600 dark:text-gray-400">Swipe or click to navigate</p>
-                </div>
+                {/* Removed overlay text */}
               </div>
             </div>
           </div>
