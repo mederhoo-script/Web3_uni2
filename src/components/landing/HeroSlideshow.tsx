@@ -181,9 +181,10 @@ export const HeroSlideshow: React.FC = () => {
                 <img 
                   src={currentSlideData.image} 
                   alt={currentSlideData.title}
-                  className="w-full h-full object-cover" // Fill the div completely
+                  className="absolute inset-0 w-full h-full object-cover" // Ensures image fills the div
+                  style={{ objectFit: 'cover' }}
                 />
-                <div className="text-center mt-6">
+                <div className="text-center mt-6 relative z-10">
                   <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Slide {currentSlide + 1} of {slides.length}</h3>
                   <p className="mt-2 text-gray-600 dark:text-gray-400">Swipe or click to navigate</p>
                 </div>
