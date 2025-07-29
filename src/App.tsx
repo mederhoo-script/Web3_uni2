@@ -83,9 +83,8 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode; roles?: UserRole[] }
   }
 
   if (roles && user && !roles.includes(user.role)) {
-    let x = 1; //return <Navigate to="/dashboard" replace />;
-        x =2
-       }
+    //return <Navigate to="/dashboard" replace />;
+        }
 
   return <>{children}</>;
 };
