@@ -79,7 +79,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode; roles?: UserRole[] }
   }
 
   if (!isAuthenticated) {
-    //return <Navigate to="/" replace />;
+    return <LoginPage />; //<Navigate to="/" replace />;
   }
 
   if (roles && user && !roles.includes(user.role)) {
