@@ -20,11 +20,16 @@ interface Slide {
 }
 
 // Import images at the top of the file
-import slide1Img from '../../assets/slide1.png';
-import slide2Img from '../../assets/slide2.png';
-import slide3Img from '../../assets/slide3.png';
-import slide4Img from '../../assets/slide4.png';
-import slide5Img from '../../assets/slide5.png';
+import slide1Img from '../../assets/slide1.jpg';
+import slide2Img from '../../assets/slide2.jpg';
+import slide3Img from '../../assets/slide3.jpg';
+import slide4Img from '../../assets/slide4.jpg';
+import slide5Img from '../../assets/slide5.jpg';
+import slide6Img from '../../assets/slide6.jpg';
+import slide7Img from '../../assets/slide7.jpeg';
+import slide7bImg from '../../assets/slide7.jpg';
+import slide8Img from '../../assets/slide8.jpg';
+import slide9Img from '../../assets/slide9.png';
 
 const slides: Slide[] = [
   {
@@ -76,6 +81,56 @@ const slides: Slide[] = [
     secondaryCTA: { text: "Browse Courses", action: "login" },
     highlight: "Expert instructors • Industry certifications • Job guarantee",
     image: slide5Img,
+  },
+  {
+    id: 6,
+    title: "Unlock Your",
+    subtitle: "Web3 Potential",
+    description: "Whether you're a beginner or an experienced developer, our platform has something for everyone. Start your Web3 journey today and shape the future of technology.",
+    primaryCTA: { text: "Create Account", action: "register" },
+    secondaryCTA: { text: "Watch Intro", action: "demo" },
+    highlight: "Beginner friendly • Advanced topics • Community support",
+    image: slide6Img,
+  },
+  {
+    id: 7,
+    title: "Explore Our",
+    subtitle: "Web3 Ecosystem",
+    description: "Dive into our rich ecosystem of resources, tools, and community support. From tutorials to live events, we have everything you need to succeed in Web3.",
+    primaryCTA: { text: "Explore Now", action: "register" },
+    secondaryCTA: { text: "Join Community", action: "login" },
+    highlight: "Resources galore • Active community • Continuous learning",
+    image: slide7Img,
+  },
+  {
+    id: 7.1, // Duplicate slide with different image
+    title: "Explore Our",
+    subtitle: "Web3 Ecosystem",
+    description: "Dive into our rich ecosystem of resources, tools, and community support. From tutorials to live events, we have everything you need to succeed in Web3.",
+    primaryCTA: { text: "Explore Now", action: "register" },
+    secondaryCTA: { text: "Join Community", action: "login" },
+    highlight: "Resources galore • Active community • Continuous learning",
+    image: slide7bImg,
+  },
+  {
+    id: 8,
+    title: "Transform Your",
+    subtitle: "Career with Web3",
+    description: "Join the Web3 revolution and future-proof your career. Learn the skills that top companies are looking for and become a leader in the decentralized web.",
+    primaryCTA: { text: "Start Learning", action: "register" },
+    secondaryCTA: { text: "See Success Stories", action: "login" },
+    highlight: "Career growth • Industry recognition • Future-ready skills",
+    image: slide8Img,
+  },
+  {
+    id: 9,
+    title: "Your Web3 Journey",
+    subtitle: "Starts Here",
+    description: "Ready to take the plunge into Web3? Sign up now and start building your future in the decentralized web. The possibilities are endless!",
+    primaryCTA: { text: "Sign Up Now", action: "register" },
+    secondaryCTA: { text: "Contact Us", action: "login" },
+    highlight: "Join today • No experience needed • Start building",
+    image: slide9Img,
   }
 ];
 
