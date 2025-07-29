@@ -79,7 +79,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode; roles?: UserRole[] }
   }
 
   if (!isAuthenticated) {
-    return <LoginPage />; //<Navigate to="/" replace />;
+    return <LandingPage />; //<Navigate to="/" replace />;
   }
 
   if (roles && user && !roles.includes(user.role)) {
@@ -230,9 +230,8 @@ function App() {
             </Route>
 
             {/* Catch all route */}
-            {/*<Route path="*" element={<Navigate to="/dashboard" replace />} />
-            */}
-          </Routes> 
+            <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          </Routes>
 
           {/* Toast notifications */}
           <Toaster
