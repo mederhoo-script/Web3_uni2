@@ -145,7 +145,7 @@ export const HeroSlideshow: React.FC = () => {
 
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 10000); // Change slide every 10 seconds
+    }, 5000); // Change slide every 5 seconds
 
     return () => clearInterval(timer);
   }, [isAutoPlaying]);

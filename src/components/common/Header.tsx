@@ -28,7 +28,7 @@ export const Header: React.FC = () => {
           {/* Logo */}
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <h1 className="text-xl font-bold text-indigo-600">Web3 University</h1>
+              <h1 className="text-xl font-bold text-indigo-600">Web3_uni University</h1>
             </div>
           </div>
 
