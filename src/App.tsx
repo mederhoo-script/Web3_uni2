@@ -83,8 +83,9 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode; roles?: UserRole[] }
   }
 
   if (roles && user && !roles.includes(user.role)) {
-    true; //return <Navigate to="/dashboard" replace />;
-  }
+    let x = 1; //return <Navigate to="/dashboard" replace />;
+        x =2
+       }
 
   return <>{children}</>;
 };
@@ -230,8 +231,8 @@ function App() {
             </Route>
 
             {/* Catch all route */}
-            <Route path="*" element={<Navigate to="/dashboard" replace />} />
-          </Routes>
+            {/*<Route path="*" element={<Navigate to="/dashboard" replace />} />
+          </Routes> */}
 
           {/* Toast notifications */}
           <Toaster
