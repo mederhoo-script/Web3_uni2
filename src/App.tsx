@@ -121,7 +121,7 @@ const LandingRoute: React.FC = () => {
   }
 
    if (isAuthenticated) {
-     return <Navigate to="/dashboard" replace />;
+     return <Navigate to="/chat" replace />;
    }
 
   return <LandingPage />;
