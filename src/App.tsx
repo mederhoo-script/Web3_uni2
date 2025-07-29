@@ -232,7 +232,8 @@ function App() {
 
             {/* Catch all route */}
             {/*<Route path="*" element={<Navigate to="/dashboard" replace />} />
-          </Routes> */}
+            */}
+          </Routes> 
 
           {/* Toast notifications */}
           <Toaster
