@@ -22,7 +22,6 @@ import { AdminPage } from './pages/admin/AdminPage';
 import { useAuthStore } from './contexts/AuthContext';
 import { authService } from './services/auth';
 import { UserRole } from './types/index';
-import { isBytesLike } from 'ethers/lib/utils';
 
 // Create a QueryClient instance
 const queryClient = new QueryClient({
