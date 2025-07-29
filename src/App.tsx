@@ -77,7 +77,9 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode; roles?: UserRole[] }
       </div>
     );
   }
-
+  if (isAuthenticated) {
+    return <>{children}</>;
+  }
   if (!isAuthenticated) {
     return <LandingPage />; //<Navigate to="/" replace />;
   }
