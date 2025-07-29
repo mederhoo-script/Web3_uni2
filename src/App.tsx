@@ -83,7 +83,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode; roles?: UserRole[] }
   }
 
   if (roles && user && !roles.includes(user.role)) {
-    return <Navigate to="/dashboard" replace />;
+    true; //return <Navigate to="/dashboard" replace />;
   }
 
   return <>{children}</>;
@@ -121,7 +121,7 @@ const LandingRoute: React.FC = () => {
   }
 
    if (isAuthenticated) {
-     return ; //<Navigate to="/dashboard" replace />;
+     return <Navigate to="/dashboard" replace />;
    }
 
   return <LandingPage />;
